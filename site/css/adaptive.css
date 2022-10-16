@@ -1,0 +1,108 @@
+/* -----Адаптивность----- */
+/* MOBILE */
+@media all and (max-width: 767.98px) {
+    [class*="_container"] {
+      max-width: none;
+    }
+
+    .button, .button_stroke {
+        font-size: 18px;
+        line-height: 28px;
+        padding: 15px 35px 15px 35px;
+        white-space: nowrap;
+    }
+
+    .title {
+        font-size: 32px;
+        line-height: 44px;
+    }
+
+    .subtitle {
+        font-size: 24px;
+        line-height: 32px;
+    }
+
+    .text {
+        font-size: 18px;
+        line-height: 28px;
+    }
+}
+
+/* TABLET */
+@media all and (min-width: 767.98px) and (max-width: 991.98px) {
+    [class*="_container"] {
+        max-width: 750px;
+    }
+
+    .title {
+        font-size: 36px;
+        line-height: 44px;
+    }
+
+    .subtitle {
+        font-size: 24px;
+        line-height: 32px;
+    }
+
+    .text {
+        font-size: 20px;
+        line-height: 28px;
+    }
+
+    .button, .button_stroke {
+        font-size: 20px;
+        line-height: 28px;
+    }
+}
+
+/* PC */
+@media all and (min-width: 991.98px) and (max-width: 1350px) {
+    [class*="_container"] {
+        max-width: 991.98px;
+    }
+}
+
+@media all and (min-width: 1350px) and (max-width: 1500px) {
+    [class*="_container"] {
+        max-width: 1300px;
+    }
+}
+
+@media all and (min-width: 1500px) and (max-width: 1700px) {
+    [class*="_container"] {
+        max-width: 1550px;
+    }
+}
+
+@media all and (min-width: 1700px) and (max-width: 1920px) {
+    [class*="_container"] {
+        max-width: 1770px;
+    }
+}
+
+@media all and (max-width: 300px) {
+    .button, .button_stroke {
+        font-size: 14px;
+        white-space: nowrap;
+        padding: 10px 30px 10px 30px;
+
+    }
+}
+
+
+
+
+
+
+
+@media all and (max-width: 390px) {
+    .current_pair_text {
+      font-size: 14px;
+      line-height: 28px;
+  }
+
+  .current_pair_price {
+    padding-left: 10px;
+    font-size: 12px;
+}
+}

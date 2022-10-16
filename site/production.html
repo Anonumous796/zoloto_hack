@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/header.css">
+	<link rel="stylesheet" type="text/css" href="css/menu.css">
+	<link rel="stylesheet" type="text/css" href="css/intro.css">
+	<link rel="stylesheet" type="text/css" href="css/developers.css">
+	<link rel="stylesheet" type="text/css" href="css/adaptive.css">
+	<link rel="stylesheet" type="text/css" href="css/production.css">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700&display=swap" rel="stylesheet">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	
+	<link rel="shortcut icon" href="favicon.ico">
+
+	<title>
+		Проигрышный вариант / Тестовый режим
+	</title>
+	
+
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+	
+</head>
+
+<body>
+
+<div class="wrapper">
+	
+<header class="header">
+	<div class="header_container">
+
+		<a href="index.html" class="header_logo">
+			<img src="img/icons/logo.svg" alt="Логотип">
+			<span>Хозяин</span>&nbsp;руды
+		</a>
+		
+			<div class="header_menu menu">
+				<div class="menu_icon">
+					<span></span>
+				</div>
+
+			<nav class="menu_body">
+				<ul class="menu_list">
+
+					<li class="menu_item">
+						<a href="index.html" class="menu_link menu_link_white_space underline">
+							Демо
+						</a>
+					</li>
+
+					<li class="menu_item">
+						<a href="production.html" class="menu_link menu_link_white_space underline">
+							Попробовать
+						</a>
+					</li>	
+
+					<li class="menu_item">
+						<a href="documentation.html" class="menu_link menu_link_white_space underline">
+							Документация
+						</a>
+					</li>
+
+					<li class="menu_item">
+						<a href="developers.html" class="menu_link menu_link_white_space underline">
+							Команда
+						</a>
+					</li>
+
+
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+</header>
+
+	<main class="main"> 
+		<section class="intro">
+			<div class="intro_container">
+					<div class="intro_text">
+						<div class="title center">
+							
+							<span>
+							Загрузка 
+							</span>
+							видео
+						</div>
+
+						<div class="text center" id="ctext">
+							Здесь Вы можете загрузить свое видео и получить аналитику по нему.
+						</div>
+					</div>
+			</div>
+			
+
+			<div class="production" id="sendf">
+				<div class="file-upload">
+				<div class="file-select">
+					<div class="file-select-button" id="fileName">Выберите файл</div>
+					<div class="file-select-name" id="noFile">Файл не выбран...</div> 
+					<input type="file" name="chooseFile" id="chooseFile">
+				</div>
+				</div>
+				<div class="padding_25">
+					<a id="sbtn" class="button ">
+						Загрузить
+					</a>
+				</div>
+			</div>
+
+
+
+			<div class="intro_inner_container" id="charts" hidden>
+				<div class="chart">
+					<div class="intro_img padding_25" id="chart1"></div>
+				</div>
+				<div class="chart">
+					<div class="intro_img padding_25" id="chart2"></div>
+				</div>
+				<div class="chart">
+					<div class="intro_img padding_25" id="chart3"></div>
+				</div>
+			</div>
+			
+			
+
+		</section>
+
+	</main>
+
+</div>
+	
+<script type="text/javascript">
+	google.charts.load('current', {'packages':['corechart']});
+
+		document.getElementById('sbtn').onclick = function() {
+			f1();
+		};
+
+	async function f1() {
+		let vid = document.getElementById("chooseFile").files[0];
+		console.log(vid);
+		let formData = new FormData();
+		console.log("click");
+		formData.append("file", vid);
+		document.getElementById('sendf').hidden = true;
+		document.getElementById('ctext').innerHTML = "Загрузка...";
+
+		let response = await fetch('http://127.0.0.1:5000/video/', {method: "POST", body: formData, headers: {
+                 "Accept": "application/json"
+            }});
+			
+		let json = await response.json();
+		console.log(json);
+			var dat = [["Кадр", "Средний класс"]];
+			for (let i = 0; i < json.length; i++) { 
+				const sum = json[i]['sizes'].reduce((a, b) => a + b, 0);
+				const avg = (sum / json[i]['sizes'].length) || 0;
+				dat.push([i, avg]);
+			}
+			console.log(dat);
+			var data = google.visualization.arrayToDataTable(dat);
+			var options = {
+			title: "Тренд изменения грансостава",
+			curveType: 'function',
+			titleTextStyle: {
+				fontName: 'Raleway',
+				fontSize: 18
+			},
+			colors: ['#FF6F57', '#FF6F57', '#FF6F57', '#FF6F57', '#FF6F57'],
+			fill: ['#FDFDFD'],
+			legend: { position: 'bottom' }
+			};
+			var chart = new google.visualization.LineChart(document.getElementById("chart1"));
+			chart.draw(data, options);
+
+
+			var dat = [["Кадр", "Класс 1", "Класс 2", "Класс 3", "Класс 4", "Класс 5", "Класс 6", "Класс 7"]];
+			for (let i = 0; i < json.length; i++) { 
+				dat.push([i, json[i]['sizes'].filter(x => x==1).length, json[i]['sizes'].filter(x => x==2).length, json[i]['sizes'].filter(x => x==3).length, json[i]['sizes'].filter(x => x==4).length, json[i]['sizes'].filter(x => x==5).length, json[i]['sizes'].filter(x => x==6).length, json[i]['sizes'].filter(x => x==7).length]);
+			}
+			console.log(dat);
+			var data = google.visualization.arrayToDataTable(dat);
+			var options = {
+			title: "Распределение частиц по классам крупности",
+			curveType: 'function',
+			titleTextStyle: {
+				fontName: 'Raleway',
+				fontSize: 18
+			},
+			fill: ['#FDFDFD'],
+			legend: { position: 'bottom' }
+			};
+			var chart = new google.visualization.LineChart(document.getElementById("chart2"));
+			chart.draw(data, options);
+
+
+
+			var dat = [["Кадр", "Максимальный размер"]];
+			for (let i = 0; i < json.length; i++) { 
+				dat.push([i, Math.max.apply(Math, json[i]['sizes'])]);
+			}
+
+			console.log(dat);
+			var data = google.visualization.arrayToDataTable(dat);
+			var options = {
+			title: "Изменение максимального размера частиц",
+			curveType: 'function',
+			colors: ['#FF6F57', '#FF6F57', '#FF6F57', '#FF6F57', '#FF6F57'],
+			titleTextStyle: {
+				fontName: 'Raleway',
+				fontSize: 18
+			},
+			fill: ['#FDFDFD'],
+			legend: { position: 'bottom' }
+			};
+			var chart = new google.visualization.LineChart(document.getElementById("chart3"));
+			chart.draw(data, options);
+
+
+			document.getElementById('charts').hidden = false;
+			document.getElementById('ctext').innerHTML = "Готово!";
+
+	}
+
+	$('#chooseFile').bind('change', function () {
+			var filename = $("#chooseFile").val();
+			if (/^\s*$/.test(filename)) {
+				$(".file-upload").removeClass('active');
+				$("#noFile").text("Файл не выбран..."); 
+			}
+			else {
+				$(".file-upload").addClass('active');
+				$("#noFile").text(filename.replace("C:\\fakepath\\", "")); 
+			}
+		});
+</script>
+
+<script src="js/script.js"></script>
+</body>
+</html>

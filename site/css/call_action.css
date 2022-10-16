@@ -1,0 +1,35 @@
+.call_action_block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    padding: 50px 0;
+}
+
+.call_action_block img {
+    max-width: 300px;
+}
+
+.call_action_block div {
+    padding: 30px 0;
+}
+
+
+/* -----Адаптивность----- */
+@media all and (max-width: 767.98px) {
+    .call_action_block {
+        padding: 0px 0 50px 0;
+    }
+    
+}
+@media all and (max-width: 350px) {
+    .call_action_block img {
+        max-width: 200px;
+    }
+
+    .call_action_block div {
+        padding: 20px 0;
+    }
+    
+}
